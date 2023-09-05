@@ -9,7 +9,7 @@ This is the initial project. I have here simple html file , style.css file and d
 
 if you run this app using live server you will see very simple page.
 
-![Alt text](![Alt text](image-1.png))
+![Alt text](image-1.png)
 
 #### Connect with me
 
