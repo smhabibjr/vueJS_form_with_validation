@@ -1,0 +1,168 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Sign up</title>
+    <link rel="stylesheet" href="./style.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <style>
+        .validationIcon{
+            position: relative;
+            float: right;
+            margin-top: -27px;
+            margin-left: -32px;
+            margin-right: 5px;
+        }
+        div p{
+            color: red;
+        }
+    </style>
+  </head>
+  <body>
+
+    <div id="app" v-cloak>
+
+        <div class="d-flex align-items-center justify-content-center p-2">
+
+            <div class="card p-3 mt-5" style="width: 30rem" >
+              <div class="card-body">
+                <div class="row">
+                  <div class="d-flex align-items-center justify-content-center">
+                    <a class="navbar-brand" href="/">
+                        <img :style="{width: 100 + 'px', height: 60 + 'px' }" v-bind:src="logoImage" class="rounded mx-auto d-block" alt="">                </a>
+                  </div>
+          
+                </div>
+          
+                <div class="row">
+                  <div class="col p-2 d-flex align-items-center justify-content-center">
+                    <h3 v-text="title"></h3>
+                  </div>
+                </div>
+          
+                <form>
+                  <div class="mb-3">
+                    <label for="exampleInputEmail1" class="form-label">Full Name</label>
+                    <input v-model="userFullName" type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
+                    <i class="far validationIcon" :class=" userFullName.length > 0 ? 'fa-check-circle' : 'fa-times-circle' " id="firstNameStatusOk"></i>
+                  </div>
+          
+                  <div class="mb-3">
+                    <label for="exampleInputEmail1" class="form-label">Email address</label>
+                    <input v-model="userEmail" type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
+                    <i class="far validationIcon" :class=" userEmail.length > 0 ? 'fa-check-circle' : 'fa-times-circle' " id="firstNameStatusOk"></i>
+
+                    <div id="emailHelp" class="form-text">We'll never share your email with anyone else.</div>
+                  </div>
+                  <div class="mb-3">
+                    <label for="exampleInputPassword1" class="form-label">Password</label>
+                    <input @keyup="passwordValidation" v-model="userPass" :type=" showPassword ? 'text': 'password' " class="form-control" id="exampleInputPassword1">
+                    <i v-on:click="toggleEye" class="fas eye validationIcon" :class=" showPassword ? 'fa-eye-slash' : 'fa-eye' "></i>
+                  </div>
+
+                  <div id="message" style="">
+                    <h6 :style="{ color: 'red', fontSize: '12px' }" v-show="showValidationMsg"> {{ validationMsg }} </h6>
+                  </div>
+          
+                  <div class="mb-3">
+                    <label for="exampleInputPassword1" class="form-label">Password confirm</label>
+                    <input v-model="userConfirmPass" type="password" class="form-control" id="exampleInputPassword1">
+                    <i class="far validationIcon" :class=" userPass === userConfirmPass ? 'fa-check-circle' : 'fa-times-circle' " id="firstNameStatusOk"></i>
+
+                  </div>
+
+                  <div class="mb-3">
+                    <label for="exampleInputSelect" class="form-label">Department</label>
+                    <select v-model="userDepartment" id="exampleInputSelect" class="form-select" aria-label="Default select example">
+                        <option value="0" selected>Select Department</option>
+                        <option value="entwicklung">Entwicklung</option>
+                        <option value="administratives">Administratives</option>
+                      </select>
+                  </div>
+
+                  
+          
+                  <div class="mb-3 form-check">
+                    <input v-model="notifyEnable" value="meeting-notify" type="checkbox" class="form-check-input" id="exampleCheck1">
+                    <label class="form-check-label" for="exampleCheck1">Meeting notification</label>
+                  </div>
+
+                  <div class="mb-3 form-check">
+                    <input v-model="notifyEnable" value="weekly-absent-report" type="checkbox" class="form-check-input" id="exampleCheck2">
+                    <label class="form-check-label" for="exampleCheck2">Weekly absent report</label>
+                  </div>
+
+
+
+                  <button @click.prevent="submitForm" type="submit" class="btn btn-primary w-100">Sign up</button>
+                </form>
+          
+              </div>
+            </div>
+          </div>
+    </div>
+    
+
+
+
+
+
+      
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <script>
+
+        const app = Vue.createApp({
+            data(){
+                return{
+                    title: "Sign Join for free",
+                    logoImage: 'cc-logo.jpg',
+                    userFullName: '',
+                    userEmail: '',
+                    userPass: '',
+                    userConfirmPass: '',
+                    userDepartment: '0',
+                    notifyEnable: [],
+                    showValidationMsg: true,
+                    validationMsg: 'Password must contain  at least one letter and one digit, and is at least 8 characters long',
+                    showPassword: false
+                }
+            },
+            methods: {
+                hintHandler(){
+                    const selectHintEle = document.querySelector('#message');
+                    selectHintEle.style.display = '';
+                },
+                passwordValidation(){
+                    const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*]).{8,}$/;
+                    if(passwordRegex.test(this.userPass)){
+                        this.showValidationMsg = false;
+                    }else{
+                        this.showValidationMsg = true;
+                    }
+                },
+                toggleEye: function() {
+                    console.log("hi there")
+                    this.showPassword = !this.showPassword
+                },
+                submitForm: function(){
+                    const formData = {
+                        username: this.userFullName,
+                        userEmail: this.userEmail,
+                        userPass: this.userPass,
+                        userConfirmPass: this.userConfirmPass,
+                        userCategory: this.userDepartment,
+                        notifyEnable: this.notifyEnable.toString()
+                    }
+                    console.table(formData);
+                }
+            }
+        })
+
+        app.mount("#app");
+    </script>
+  </body>
+</html>
+
